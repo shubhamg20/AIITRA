@@ -71,9 +71,9 @@ class Area_coverage:
                 curr_bot_grid=self.get_grid_state()
                 threshold_x=self.main_bot_cord[0]>curr_bot_grid[0]+(.15) and self.main_bot_cord[0]>curr_bot_grid[0]+1-(.15)
                 threshold_y=self.main_bot_cord[1]>curr_bot_grid[1]+(.15) and self.main_bot_cord[1]>curr_bot_grid[1]+1-(.15)
-                if (threshold_x and threshold_y)and (self.threshold_bool[self.main_index]):
+                if (threshold_x and threshold_y)and (self.threshold_bool[self.main_index-1]):
                     # self.threshold_yaw=self.lidar_info.yaw
-                    self.threshold_bool[i]=0
+                    self.threshold_bool[self.main_index-1]=0
                     cordis_with_obs=self.lidar_info.get_final_exit_cordis(self.lidar_info.indexes_with_obs)
                     self.give_pheromone(cordis_with_obs,-2)
                     UE_locns=self.lidar_info.find_unexplored()
@@ -114,7 +114,7 @@ class Area_coverage:
                     threshold_exit_y=self.main_bot_cord[1]>self.exit_locn[self.main_index-1][1]+(.15) and self.main_bot_cord[1]>self.exit_locn[self.main_index-1][1]+1-(.15)
                     if ( threshold_exit_y and threshold_exit_x ):
                         # self.threshold_rotate=0
-                        self.threshold_bool[self.main_index]=1
+                        self.threshold_bool[self.main_index-1]=1
                     else:
                         EL_mid=(2*self.exit_locn[self.main_index][0]+0.5)/2
                         BC=self.main_bot_cord

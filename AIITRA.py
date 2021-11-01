@@ -4,7 +4,8 @@ import numpy as np
 import math                                                                        #correction in magnitude of rejection vector     
 from std_msgs.msg import Float32 
 from nav_msgs.msg import Odometry 
-import lidar  
+import lidar
+from Motion import Motion 
 from random import randrange 
 
 class Map:
@@ -31,7 +32,7 @@ class Area_coverage:
             if self.index==self.main_index:
                 self.main_bot_cord=[data.pose.pose.position.x,data.pose.pose.position.y]
             else:
-                self.bot_cords_arr.append([data.pose.pose.position.x,data.pose.pose.position.y])                             #correct vtrs get
+                self.bot_cords_arr.append([data.pose.pose.position.x,data.pose.pose.position.y])      
             
     def get_bot_vtrs_arr(self):
         bot_vtrs_arr=[]
@@ -55,32 +56,31 @@ class Area_coverage:
         r = rospy.Rate(50)  
         self.vel_pub=rospy.Publisher('/drive_wheel/command',Float32,queue_size=10)
         rospy.init_node('/cleaning_bot',anonymous=True)
+        self.threshold_bool=[1,1,1,1]
+        self.exit_locn=[[],[],[],[]]
         while not rospy.is_shutdown():
-            for i in [0,1,2,3]:
-                self.lidar_info=lidar.Lidar(self.index,self.main_bot_cord)
+            for i in [1,2,3,4]:
                 self.main_index=i
-                self.threshold_bool=1                                #Heart of this algo
+                self.lidar_info=lidar.Lidar(self.main_index,self.main_bot_cord)                              
+                # self.threshold_rotate=1
                 self.bot_cords_arr=[]
                 self.bot_vtrs=[]
-                for i in [1,2,3,4]:
-                    self.index=i
-                    topic='/robot'+i+'/odom'
-                    rospy.Subscriber(topic,Odometry,self.get_bot_cords)                               #correct msg info
-                # rejection_vtr=self.get_rejection_vtr()
-                # cordis_with_obs=self.lidar_info.get_final_exit_cordis(self.lidar_info.indexes_with_obs)
+                for j in [1,2,3,4]:
+                    topic='/robot'+j+'/odom'
+                    rospy.Subscriber(topic,Odometry,self.get_bot_cords)                            
                 curr_bot_grid=self.get_grid_state()
-                threshold_x=self.main_bot_cord[0]>curr_bot_grid[0]+(.15/2) and self.main_bot_cord[0]>curr_bot_grid[0]+1-(.15/2)
-                threshold_y=self.main_bot_cord[1]>curr_bot_grid[1]+(.15/2) and self.main_bot_cord[1]>curr_bot_grid[1]+1-(.15/2)
-                if (threshold_x and threshold_y)and self.threshold_bool:
-                    self.exit_locn=[]
-                    self.threshold_bool=0
+                threshold_x=self.main_bot_cord[0]>curr_bot_grid[0]+(.15) and self.main_bot_cord[0]>curr_bot_grid[0]+1-(.15)
+                threshold_y=self.main_bot_cord[1]>curr_bot_grid[1]+(.15) and self.main_bot_cord[1]>curr_bot_grid[1]+1-(.15)
+                if (threshold_x and threshold_y)and (self.threshold_bool[self.main_index]):
+                    # self.threshold_yaw=self.lidar_info.yaw
+                    self.threshold_bool[i]=0
                     cordis_with_obs=self.lidar_info.get_final_exit_cordis(self.lidar_info.indexes_with_obs)
                     self.give_pheromone(cordis_with_obs,-2)
                     UE_locns=self.lidar_info.find_unexplored()
                     if len(UE_locns)==0:
                         if len(cordis_with_obs)==5:
                             self.give_pheromone(curr_bot_grid,-2)                               #not in our given map
-                            break#backtrack and rotate random angle
+                            break  #backtrack and rotate random angle
                         else:
                             self.give_pheromone(curr_bot_grid,-.02)
                             E_locns=[]
@@ -96,31 +96,37 @@ class Area_coverage:
                                 if phermone>pheromone_max:
                                     phermone_max=phermone
                                     grid_max=grid
-                            self.exit_locn=grid_max        
+                            self.exit_locn[self.main_index-1]=grid_max
+                            
                             #go to that grid                
 
                     elif len(UE_locns)==1:
                         self.give_pheromone(curr_bot_grid,-.02)
-                        self.exit_locn=UE_locns[0]
+                        self.exit_locn[self.main_index-1]=UE_locns[0]
                         #go there
                     else:
                         self.give_pheromone(curr_bot_grid,-.02+len(UE_locns))
                         rejection_vtr=self.get_rejection_vtr()
-                        self.exit_locn=self.get_closest_exit_locn(rejection_vtr)
+                        self.exit_locn[self.main_index-1]=self.get_closest_exit_locn(rejection_vtr)
                         #go towards this dir
                 else:
-                    threshold_exit_x=self.main_bot_cord[0]>self.exit_locn[0]+(.15/2) and self.main_bot_cord[0]>self.exit_locn[0]+1-(.15/2)
-                    threshold_exit_y=self.main_bot_cord[1]>self.exit_locn[1]+(.15/2) and self.main_bot_cord[1]>self.exit_locn[1]+1-(.15/2)
-                    if 
-                    if self.exit_locn==curr_bot_grid:
-                        self.threshold_bool=1
-
+                    threshold_exit_x=self.main_bot_cord[0]>self.exit_locn[self.main_index-1][0]+(.15) and self.main_bot_cord[0]>self.exit_locn[self.main_index-1][0]+1-(.15)
+                    threshold_exit_y=self.main_bot_cord[1]>self.exit_locn[self.main_index-1][1]+(.15) and self.main_bot_cord[1]>self.exit_locn[self.main_index-1][1]+1-(.15)
+                    if ( threshold_exit_y and threshold_exit_x ):
+                        # self.threshold_rotate=0
+                        self.threshold_bool[self.main_index]=1
+                    else:
+                        EL_mid=(2*self.exit_locn[self.main_index][0]+0.5)/2
+                        BC=self.main_bot_cord
+                        vel_X=EL_mid[0]-BC[0]
+                        vel_Y=-EL_mid[1]-BC[1]
+                        Motion.translate(vel_X,vel_Y)
             r.sleep()
 
     def magnitude_of_vtrs(vector_array): 
         m=[]
         for vector in vector_array:
-            k=1                                                                     # find k constant
+            k=20                                                                     # find k constant
             RJ_value=k/(math.sqrt(sum(pow(element, 2) for element in vector)))
             if RJ_value>1000:
                 RJ_value=1000

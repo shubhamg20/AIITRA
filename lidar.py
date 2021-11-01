@@ -7,36 +7,36 @@ from sensor_msgs.msg import LaserScan
 from nav_msgs.msg import Odometry
 import AIITRA
 class Lidar():
-    def get_laser_data(self,data):        
-        if data.header.frame_id=="/robot"+self.index+"/tf/lidar1":      
-            self.bot_ranges=data.ranges
-    def get_rotation (self,msg):
-        orientation_msg = msg.pose.pose.orientation
-        orientation_list = [orientation_msg.x, orientation_msg.y, orientation_msg.z, orientation_msg.w]
-        (roll, pitch, yaw) = euler_from_quaternion (orientation_list)
-        self.yaw=yaw                                                        #check yaw
+    def get_laser_data(self,data):              
+        self.bot_ranges=data.ranges
+    # def get_rotation (self,msg):
+    #     orientation_msg = msg.pose.pose.orientation
+    #     orientation_list = [orientation_msg.x, orientation_msg.y, orientation_msg.z, orientation_msg.w]
+    #     (roll, pitch, yaw) = euler_from_quaternion (orientation_list)
+    #     self.yaw=yaw                                                        #check yaw
 
     def get_exit_cell_cordis(self):
         exit_gridcells=[]
         (Fx,Fy)=[self.main_bot_cord.x+(self.range)*math.cos(self.yaw),self.main_bot_cord.y+(self.range)*math.sin(self.yaw)]
         (Fx,Fy)=[int(2*Fx),int(2*Fy)]
         (Bx,By)=[int(2*self.main_bot_cord.x),int(2*self.main_bot_cord.y)]
-        if (Bx-Fx,By-Fy)==(0,1):
-            exit_gridcells=[[Bx+1,By],[Bx+1,By+1],[Bx,By+1],[Bx-1,By-1],[Bx-1,By]]                  #change the order here
-        if (Bx-Fx,By-Fy)==(1,1):
-            exit_gridcells=[[Bx+1,By],[Bx+1,By+1],[Bx,By+1],[Bx-1,By+1],[Bx+1,By-1]]            
-        if (Bx-Fx,By-Fy)==(1,0):
-            exit_gridcells=([Bx+1,By],[Bx+1,By+1],[Bx,By+1],[Bx,By-1],[Bx+1,By-1])            
-        if (Bx-Fx,By-Fy)==(1,-1):
-            exit_gridcells=([Bx+1,By],[Bx+1,By+1],[Bx,By-1],[Bx-1,By-1],[Bx+1,By-1])            
-        if (Bx-Fx,By-Fy)==(0,-1):
-            exit_gridcells=[[Bx-1,By],[Bx-1,By-1],[Bx,By-1],[Bx+1,By+1],[Bx+1,By]]            
-        if (Bx-Fx,By-Fy)==(-1,-1):
-            exit_gridcells=[[Bx-1,By],[Bx-1,By-1],[Bx,By-1],[Bx+1,By-1],[Bx-1,By+1]]          
-        if (Bx-Fx,By-Fy)==(-1,0):
-            exit_gridcells=([Bx-1,By],[Bx-1,By-1],[Bx,By-1],[Bx,By+1],[Bx-1,By+1])   
-        if (Bx-Fx,By-Fy)==(-1,1):
-            exit_gridcells=([Bx-1,By],[Bx-1,By-1],[Bx,By+1],[Bx+1,By+1],[Bx-1,By+1])  
+        # if (Bx-Fx,By-Fy)==(0,1):
+        #     exit_gridcells=[[Bx+1,By],[Bx+1,By+1],[Bx,By+1],[Bx-1,By-1],[Bx-1,By]]                  #change the order here
+        # if (Bx-Fx,By-Fy)==(1,1):
+        #     exit_gridcells=[[Bx+1,By],[Bx+1,By+1],[Bx,By+1],[Bx-1,By+1],[Bx+1,By-1]]            
+        # if (Bx-Fx,By-Fy)==(1,0):
+        #     exit_gridcells=([Bx+1,By],[Bx+1,By+1],[Bx,By+1],[Bx,By-1],[Bx+1,By-1])            
+        # if (Bx-Fx,By-Fy)==(1,-1):
+        #     exit_gridcells=([Bx+1,By],[Bx+1,By+1],[Bx,By-1],[Bx-1,By-1],[Bx+1,By-1])            
+        # if (Bx-Fx,By-Fy)==(0,-1):
+        #     exit_gridcells=[[Bx-1,By],[Bx-1,By-1],[Bx,By-1],[Bx+1,By+1],[Bx+1,By]]            
+        # if (Bx-Fx,By-Fy)==(-1,-1):
+        #     exit_gridcells=[[Bx-1,By],[Bx-1,By-1],[Bx,By-1],[Bx+1,By-1],[Bx-1,By+1]]          
+        # if (Bx-Fx,By-Fy)==(-1,0):
+        #     exit_gridcells=([Bx-1,By],[Bx-1,By-1],[Bx,By-1],[Bx,By+1],[Bx-1,By+1])   
+        # if (Bx-Fx,By-Fy)==(-1,1):
+        #     exit_gridcells=([Bx-1,By],[Bx-1,By-1],[Bx,By+1],[Bx+1,By+1],[Bx-1,By+1])
+        exit_gridcells=[[Bx+1,By],[Bx+1,By+1],[Bx,By+1],[Bx-1,By-1],[Bx-1,By],[Bx,By-1],[Bx-1,By+1],[Bx+1,By-1]]
         self.exit_gridcells=exit_gridcells
         return self.exit_gridcells
 
@@ -53,8 +53,14 @@ class Lidar():
             self.exit_list.append(4)
         if (self.bot_ranges[22]>.8 and self.bot_ranges[23]>.8) and self.bot_ranges[24]>.8:
             self.exit_list.append(5)
+        if (self.bot_ranges[22]>.8 and self.bot_ranges[23]>.8) and self.bot_ranges[24]>.8:
+            self.exit_list.append(6)
+        if (self.bot_ranges[22]>.8 and self.bot_ranges[23]>.8) and self.bot_ranges[24]>.8:
+            self.exit_list.append(7)
+        if (self.bot_ranges[22]>.8 and self.bot_ranges[23]>.8) and self.bot_ranges[24]>.8:
+            self.exit_list.append(8)            
         self.n=len(self.exit_list)
-        for i in [1,2,3,4,5]:
+        for i in [1,2,3,4,5,6,7,8]:
             if i not in self.exit_list:
                 self.indexes_with_obs.append(i)
             
@@ -81,9 +87,8 @@ class Lidar():
         self.range=0.7
         self.main_bot_cord=main_bot_cord
         self.bot_ranges=[]
-        rospy.init_node('/lidar_info',anonymous=True)
-        rospy.Subscriber('/scan',LaserScan,self.get_laser_data)
-        rospy.Subscriber ('/odom', Odometry,self.get_rotation)
+        rospy.Subscriber('/robot' + self.index +'/scan',LaserScan,self.get_laser_data)
+        # rospy.Subscriber ('/robot'+self.index+'odom', Odometry,self.get_rotation)
         if self.bot_ranges:
            self.get_exit_loctns()
            self.get_exit_cell_locns()

@@ -1,0 +1,16 @@
+<launch>
+  <param name="/use_sim_time" value="true" />
+
+  <!-- start world -->
+  <node name="gazebo" pkg="gazebo_ros" type="gazebo" 
+   args="$(find gazebo_ros)/worlds/empty_world.world" respawn="false" output="screen" />
+
+  <!-- start gui -->
+  <node name="gazebo_gui" pkg="gazebo" type="gui" respawn="false" output="screen"/>
+
+  <!-- include our robots -->
+  <include file="/home/tejas/AIITRA_ws/src/multi_robot/src/launch/robots.launch">
+     
+  </include>
+  
+</launch>

@@ -1,0 +1,167 @@
+<?xml version="1.0" ?>
+<robot name="aiitra_urdf" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find aiitra_urdf_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find aiitra_urdf_description)/urdf/aiitra_urdf.trans" />
+<xacro:include filename="$(find aiitra_urdf_description)/urdf/aiitra_urdf.gazebo" />
+<link name="base_link">
+  <inertial>
+    <origin rpy="0 0 0" xyz="0.002112184735904084 -2.24558823063699e-17 0.09226027842072686"/>
+    <mass value="50.86976008521217"/>
+    <inertia ixx="0.30477" ixy="-0.0" ixz="-0.006579" iyy="0.310914" iyz="-0.0" izz="0.519554"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="back_right_wheel_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-4.163336342344337e-17 -0.019999999999999962 0.0"/>
+    <mass value="0.7479503789666576"/>
+    <inertia ixx="0.001296" ixy="0.0" ixz="0.0" iyy="0.002393" iyz="0.0" izz="0.001296"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.085 0.125 -0.08"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/back_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.085 0.125 -0.08"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/back_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="fromt_right_wheel_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="5.551115123125783e-17 -0.019999999999999962 0.0"/>
+    <mass value="0.7479503789666576"/>
+    <inertia ixx="0.001296" ixy="0.0" ixz="0.0" iyy="0.002393" iyz="0.0" izz="0.001296"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.08 0.125 -0.08"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/fromt_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.08 0.125 -0.08"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/fromt_right_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="back_left_wheel_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="-2.7755575615628914e-17 0.019999999999999962 0.0"/>
+    <mass value="0.7479503789666576"/>
+    <inertia ixx="0.001296" ixy="0.0" ixz="0.0" iyy="0.002393" iyz="0.0" izz="0.001296"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="0.085 -0.125 -0.08"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/back_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="0.085 -0.125 -0.08"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/back_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="front_left_wheel_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="5.551115123125783e-17 0.019999999999999962 0.0"/>
+    <mass value="0.7479503789666576"/>
+    <inertia ixx="0.001296" ixy="-0.0" ixz="0.0" iyy="0.002393" iyz="0.0" izz="0.001296"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.08 -0.125 -0.08"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/front_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.08 -0.125 -0.08"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/front_left_wheel_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="lidar_1">
+  <inertial>
+    <origin rpy="0 0 0" xyz="1.1682990373046431e-07 5.8025582573425195e-18 0.014999999999999958"/>
+    <mass value="1.5380141595052421"/>
+    <inertia ixx="0.000915" ixy="0.0" ixz="-0.0" iyy="0.000915" iyz="0.0" izz="0.001599"/>
+  </inertial>
+  <visual>
+    <origin rpy="0 0 0" xyz="-0.059347 -0.0 -0.17"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin rpy="0 0 0" xyz="-0.059347 -0.0 -0.17"/>
+    <geometry>
+      <mesh filename="package://aiitra_urdf_description/meshes/lidar_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="Rev1" type="continuous">
+  <origin rpy="0 0 0" xyz="-0.085 -0.125 0.08"/>
+  <parent link="base_link"/>
+  <child link="back_right_wheel_1"/>
+  <axis xyz="0.0 -1.0 0.0"/>
+</joint>
+
+<joint name="Rev2" type="continuous">
+  <origin rpy="0 0 0" xyz="0.08 -0.125 0.08"/>
+  <parent link="base_link"/>
+  <child link="fromt_right_wheel_1"/>
+  <axis xyz="0.0 -1.0 0.0"/>
+</joint>
+
+<joint name="Rev3" type="continuous">
+  <origin rpy="0 0 0" xyz="-0.085 0.125 0.08"/>
+  <parent link="base_link"/>
+  <child link="back_left_wheel_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<joint name="Rev4" type="continuous">
+  <origin rpy="0 0 0" xyz="0.08 0.125 0.08"/>
+  <parent link="base_link"/>
+  <child link="front_left_wheel_1"/>
+  <axis xyz="0.0 1.0 0.0"/>
+</joint>
+
+<joint name="Rigid5" type="fixed">
+  <origin rpy="0 0 0" xyz="0.059347 0.0 0.17"/>
+  <parent link="base_link"/>
+  <child link="lidar_1"/>
+</joint>
+
+</robot>

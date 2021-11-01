@@ -1,0 +1,30 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/tejas/programmobot_ws/devel/include/**",
+        "/home/tejas/dexter/devel/include/**",
+        "/home/tejas/turtlesim_ws/devel/include/**",
+        "/home/tejas/catkin_ws1/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/tejas/programmobot_ws/src/gazebo_ros_motors-master/include/**",
+        "/home/tejas/programmobot_ws/src/hector_gazebo_plugins/include/**",
+        "/home/tejas/catkin_ws1/src/mav_comm/mav_msgs/include/**",
+        "/home/tejas/catkin_ws1/src/mav_comm/mav_planning_msgs/include/**",
+        "/home/tejas/catkin_ws1/src/rotors_simulator/rotors_control/include/**",
+        "/home/tejas/catkin_ws1/src/rotors_simulator/rotors_gazebo_plugins/include/**",
+        "/home/tejas/catkin_ws1/src/rotors_simulator/rotors_hil_interface/include/**",
+        "/home/tejas/catkin_ws1/src/rotors_simulator/rotors_joy_interface/include/**",
+        "/home/tejas/turtlesim_ws/src/ros_tutorials/turtlesim/include/**",
+        "/home/tejas/turtlesim_ws/src/turtlesim_mover/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}
